@@ -4,20 +4,20 @@ package calculos;
 public class ComprobarEnTriangulo {
 
 	
-	public static String estaDentro (Vertice A, Vertice B, Vertice C, Vertice P) {
+	public static String estaDentro (Vertice a, Vertice b, Vertice c, Vertice p) {
 
-		double denominador = ((B.y-C.y) * (A.x-C.x) + 
-						   (C.x - B.x) * (A.y - C.y));
+		double denominador = ((b.y-c.y) * (a.x-c.x) + 
+						   (c.x - b.x) * (a.y - c.y));
 		
-		double a = ((B.y - C.y) * (P.x - C.x) +
-					(C.x - B.x) * (P.y - C.y)) / denominador;
+		double verticeA = ((b.y - c.y) * (p.x - c.x) +
+					(c.x - b.x) * (p.y - c.y)) / denominador;
 		
-		double b = ((C.y - A.y) * (P.x - C.x) +
-				    (A.x - C.x) * (P.y - C.y)) / denominador;
+		double verticeB  = ((c.y - a.y) * (p.x - c.x) +
+				    (a.x - c.x) * (p.y - c.y)) / denominador;
 		
-		double c = 1 - a - b;
+		double verticeC = 1 - verticeA - verticeB;
 		
-		if( a>=0 && b >= 0 && c>= 0) {
+		if( verticeA >=0 && verticeB >= 0 && verticeC>= 0) {
 			return "Está dentro";
 		} else {
 			return "Está fuera";
@@ -25,17 +25,23 @@ public class ComprobarEnTriangulo {
 		
 	}
 	
-	public static void main(String[] args) {
-		
-		Vertice a = new Vertice(0,0);
-		Vertice b = new Vertice(10, 30);
-		Vertice c = new Vertice(20, 0);
-		Vertice p = new Vertice(10, 15);
-		
-		String resultado = estaDentro(a, b, c, p);
-		
-		System.out.println(resultado);
- 		 
+	public static String estaDentro(Vertice A, Vertice B, Vertice C, 
+			double px, double py ) {
+		Vertice P = new Vertice(px, py);
+		return estaDentro(A, B, C, P);
 	}
+	
+//	public static void main(String[] args) {
+//		
+//		Vertice a = new Vertice(0,0);
+//		Vertice b = new Vertice(10, 30);
+//		Vertice c = new Vertice(20, 0);
+//		Vertice p = new Vertice(10, 15);
+//		
+//		String resultado = estaDentro(a, b, c, p);
+//		
+//		System.out.println(resultado);
+// 		 
+//	}
 
 }
