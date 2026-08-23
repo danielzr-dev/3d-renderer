@@ -1,11 +1,11 @@
-package calculos;
+package math;
 
-public class Vertice {
+public class Vertex {
 	
 	double x;
 	double y;
 	
-	public Vertice (double x, double y) {
+	public Vertex (double x, double y) {
 		this.x = x;
 		this.y = y;
 	}

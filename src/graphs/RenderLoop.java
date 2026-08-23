@@ -1,11 +1,11 @@
-package graficos;
+package graphs;
 
-public class LoopRenderizado implements Runnable {
+public class RenderLoop implements Runnable {
 	
-	private RenderizarPanel miPanel; 
+	private RenderPanel miPanel; 
 	private boolean estaRenderizando = true;
 	
-	public LoopRenderizado(RenderizarPanel miPanel) {
+	public RenderLoop(RenderPanel miPanel) {
 		this.miPanel = miPanel;
 	}
 	
