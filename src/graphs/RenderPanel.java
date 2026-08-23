@@ -25,12 +25,19 @@ public class RenderPanel extends JPanel {
 		setPreferredSize(new java.awt.Dimension(width, height));
 	}
 	
+	public void addTriangle(Triangle triangle) {
+		triangles.add(triangle);
+	}
+	
+	@Override
 	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		
 		for(Triangle  tri: triangles) {
 			rasterizer.paintTriangle(tri);
 		}
+		
+		g.drawImage(bufferedImage, 0, 0, null);
 	}
-	
 	
 }
