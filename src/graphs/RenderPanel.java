@@ -1,6 +1,5 @@
 package graphs;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -8,12 +7,12 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import model.Triangle;
+import model.Triangle2D;
 
 public class RenderPanel extends JPanel {
 	
 	private TriangleRasterizer rasterizer;
-	private List<Triangle> triangles;
+	private List<Triangle2D> triangles;
 	private BufferedImage bufferedImage;
 
 	
@@ -25,7 +24,7 @@ public class RenderPanel extends JPanel {
 		setPreferredSize(new java.awt.Dimension(width, height));
 	}
 	
-	public void addTriangle(Triangle triangle) {
+	public void addTriangle(Triangle2D triangle) {
 		triangles.add(triangle);
 	}
 	
@@ -33,7 +32,7 @@ public class RenderPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		for(Triangle  tri: triangles) {
+		for(Triangle2D  tri: triangles) {
 			rasterizer.paintTriangle(tri);
 		}
 		

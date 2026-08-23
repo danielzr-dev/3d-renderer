@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 import math.PointInTriangle;
 import math.Vertex;
-import model.Triangle;
+import model.Triangle2D;
 
 public class TriangleRasterizer {
 	
@@ -20,7 +20,7 @@ public class TriangleRasterizer {
 		
 	}
 	
-	public void paintTriangle(Triangle tri) {
+	public void paintTriangle(Triangle2D tri) {
 		Vertex a = tri.getA();
 		Vertex b = tri.getB();
 		Vertex c = tri.getC();
@@ -42,7 +42,7 @@ public class TriangleRasterizer {
 		
 	}
 	
-	private int[] calcDelimitation(Triangle tri) {
+	private int[] calcDelimitation(Triangle2D tri) {
 		double maxX = Math.max(tri.getA().getX(), Math.max(tri.getB().getX(), tri.getC().getX()));
 		double minX = Math.min(tri.getA().getX(), Math.min(tri.getB().getX(), tri.getC().getX()));
 		double maxY = Math.max(tri.getA().getY(), Math.max(tri.getB().getY(), tri.getC().getY()));

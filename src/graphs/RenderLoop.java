@@ -3,29 +3,28 @@ package graphs;
 public class RenderLoop implements Runnable {
 	
 	private RenderPanel miPanel; 
-	private boolean estaRenderizando = true;
+	private boolean isRendering = true;
 	
 	public RenderLoop(RenderPanel miPanel) {
 		this.miPanel = miPanel;
 	}
 	
-	
 	@Override
 	public void run() {
 		
-		while(estaRenderizando) {
+		while(isRendering) {
 			miPanel.repaint();
 			try {
 				Thread.sleep(16);
 			} catch (InterruptedException e) {
-				System.out.println("Se ha interrumpido el renderizado");
+				System.out.println("Renderer has stopped");
 			}
 		}
 		
 	}
 
-	public void detener() {
-		estaRenderizando = false;
+	public void stop() {
+		isRendering = false;
 	}
 
 }

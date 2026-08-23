@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.swing.JFrame;
 
 import math.Vertex;
-import model.Triangle;
+import model.Triangle2D;
 
 public class RenderWindow {
 
@@ -27,7 +27,7 @@ public class RenderWindow {
 		Vertex v1 = new Vertex(100, 100);
 		Vertex v2 = new Vertex(400, 150);
 		Vertex v3 = new Vertex(250, 400);
-		Triangle tri = new Triangle(v1, v2, v3, Color.RED);
+		Triangle2D tri = new Triangle2D(v1, v2, v3, Color.RED);
 		this.renderPanel.addTriangle(tri);
 		
 		Thread thread = new Thread(loopRender);

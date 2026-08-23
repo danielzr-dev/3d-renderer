@@ -18,6 +18,7 @@ public class PointInTriangle {
 		double vertexC = 1 - vertexA - vertexB;
 		
 		return (vertexA >=0 && vertexB >= 0 && vertexC>= 0);
+		
 	}
 	
 	public static boolean isInside(Vertex A, Vertex B, Vertex C, 
@@ -26,17 +27,4 @@ public class PointInTriangle {
 		return isInside(A, B, C, P);
 	}
 	
-//	public static void main(String[] args) {
-//		
-//		Vertice a = new Vertice(0,0);
-//		Vertice b = new Vertice(10, 30);
-//		Vertice c = new Vertice(20, 0);
-//		Vertice p = new Vertice(10, 15);
-//		
-//		String resultado = estaDentro(a, b, c, p);
-//		
-//		System.out.println(resultado);
-// 		 
-//	}
-
 }
