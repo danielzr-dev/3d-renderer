@@ -20,18 +20,22 @@ public class Triangle2D {
 
 	public Vertex getA() {
 		return a;
+		
 	}
 
 	public Vertex getB() {
 		return b;
+		
 	}
 
 	public Vertex getC() {
 		return c;
+		
 	}
 	
 	public Color getColor() {
 		return color;
+		
 	}
 	
 	
