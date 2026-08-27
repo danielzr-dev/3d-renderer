@@ -42,8 +42,24 @@ public class Matrix4by4 {
 		
 	}
 	
-//	public Vertex3D multiply(Matrix4by4 other) {
-//		
-//	}
-//	
+	public Matrix4by4 multiply(Matrix4by4 other) {
+		
+		Matrix4by4 result = new Matrix4by4();
+		
+		for(int row = 0; row <4; row++) {
+			for(int col = 0; col <4; col++) {
+				
+				float sum = 0.0f;
+				for(int i = 0; i < 4; i++) {
+					sum+= this.matrix[row * 4 + i] * other.matrix[i*4 + col];
+					
+				}
+				result.matrix[row * 4 + col] = sum;
+				
+			}
+		}
+		return result;
+		
+	}
+	
 }
