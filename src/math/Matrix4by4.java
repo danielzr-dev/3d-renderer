@@ -2,7 +2,7 @@ package math;
 
 public class Matrix4by4 {
 	
-	private float[] matrix = new float[16];
+	float[] matrix = new float[16];
 	
 	public Matrix4by4() {
 		setIdentity();
@@ -17,6 +17,10 @@ public class Matrix4by4 {
 			matrix[5] = 1.0f;
 			matrix[10] = 1.0f;
 			matrix[15] = 1.0f;	
+	}
+	
+	public Matrix4by4(boolean empty) {
+
 	}
 	
 	public Vertex3D multiply(Vertex3D v) {
