@@ -2,6 +2,7 @@ package math;
 
 public class Transformations {
 
+
 	public static Matrix4by4 translation(float x, float y, float z) {
 	
 		Matrix4by4 result = new Matrix4by4(true); //Empty matrix
@@ -21,11 +22,13 @@ public class Transformations {
 		
 	}
 	
-	public static Matrix4by4 rotation(float x, float y, float z) {
-		
-
-		
-	}
+	/*
+	 * public static Matrix4by4 rotation(float x, float y, float z) {
+	 * 
+	 * 
+	 * 
+	 * }
+	 */
 	
 	public static Matrix4by4 scale(float x, float y, float z) {
 		
