@@ -22,13 +22,14 @@ public class Transformations {
 		
 	}
 	
-	/*
-	 * public static Matrix4by4 rotation(float x, float y, float z) {
-	 * 
-	 * 
-	 * 
-	 * }
-	 */
+	
+	  public static Matrix4by4 rotation(float angle, Direction3D axis) {
+	  
+		  Quaternion q = new Quaternion(angle, axis);
+		  return q.toRotationMatrix();	  
+	  
+	  }
+	 
 	
 	public static Matrix4by4 scale(float x, float y, float z) {
 		
@@ -39,6 +40,14 @@ public class Transformations {
 		result.matrix[5] = y;
 		result.matrix[10] = z;
 		result.matrix[15] = 1.0f;
+		
+		return result;
+	}
+	
+	public Matrix4by4 toRotationMatrix() {
+		
+		Matrix4by4 result = new Matrix4by4(true);
+		
 		
 		return result;
 	}
