@@ -1,4 +1,4 @@
-package graphs;
+package rendering;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

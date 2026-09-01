@@ -2,18 +2,18 @@ package graphs;
 
 public class RenderLoop implements Runnable {
 	
-	private RenderPanel miPanel; 
+	private RenderPanel myPanel; 
 	private boolean isRendering = true;
 	
 	public RenderLoop(RenderPanel miPanel) {
-		this.miPanel = miPanel;
+		this.myPanel = miPanel;
 	}
 	
 	@Override
 	public void run() {
 		
 		while(isRendering) {
-			miPanel.repaint();
+			myPanel.repaint();
 			try {
 				Thread.sleep(16);
 			} catch (InterruptedException e) {

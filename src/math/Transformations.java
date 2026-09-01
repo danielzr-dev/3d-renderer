@@ -46,8 +46,7 @@ public class Transformations {
 	public Matrix4by4 toRotationMatrix() {
 		
 		Matrix4by4 result = new Matrix4by4(true);
-		
-		
+	
 		return result;
 	}
 	
@@ -69,9 +68,7 @@ public class Transformations {
 		//Row 3
 		result.matrix[14] = -1.0f;
 		
-		
 		return result;
-		
 		
 	}
 	

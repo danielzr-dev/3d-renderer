@@ -1,6 +1,8 @@
 package graphs;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,12 @@ public class RenderPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
+		//Clear buffer
+		Graphics2D g2d = (Graphics2D) bufferedImage.createGraphics();
+		g2d.setColor(Color.BLACK);
+		g2d.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
+		g2d.dispose();
 		
 		//Pipeline for vertex transformation 3D -> 2D
 		

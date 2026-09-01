@@ -30,7 +30,6 @@ public class Matrix4by4 {
 		float vz = v.z;
 		float vw = 1.0f;
 		
-		
 		float rx = matrix[0] * vx + matrix[1] * vy + matrix[2] * vz + matrix[3] * vw;
 		float ry = matrix[4] * vx + matrix[5] * vy + matrix[6] * vz + matrix[7] * vw;
 		float rz = matrix[8] * vx + matrix[9] * vy + matrix[10] * vz + matrix[11] * vw;

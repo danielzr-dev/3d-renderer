@@ -30,8 +30,7 @@ public class Camera {
 		
 		//View = Rotate x Translate
 		return rotateInv.multiply(translateInv);
-		
-		
+			
 	}
 
 }
