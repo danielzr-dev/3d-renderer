@@ -64,6 +64,27 @@ public class Quaternion {
 		return result;
 	}
 	
+	public Quaternion multiply(Quaternion other) {
+		
+		float nx = this.w * other.x + this.x * other.w + this.y * other.z - this.z * other.y;
+		float ny = this.w * other.y - this.x * other.z + this.y * other.w + this.z * other.x;
+		float nz = this.w * other.z + this.x * other.y - this.y * other.x + this.z * other.w;
+		float nw = this.w * other.w - this.x * other.x - this.y * other.y - this.z * other.z;
+		
+		return new Quaternion(nx, ny, nz, nw);
+	}
+	
+	public Quaternion normalize() {
+		
+		float magnitude = (float) Math.sqrt(x*x + y*y + z*z + w*w);
+		
+		if(magnitude == 0) {
+			return new Quaternion(x,y,z,w);
+		}
+
+		return new Quaternion(x/magnitude, y/magnitude, z/magnitude, w/magnitude);
+	}
+	
 	
 	@Override
 	public String toString() {
