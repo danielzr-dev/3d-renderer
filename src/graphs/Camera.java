@@ -32,5 +32,15 @@ public class Camera {
 		return rotateInv.multiply(translateInv);
 			
 	}
+	
+	public void rotate(Quaternion newRotation) {
+		
+		//Quaternion multiplication
+		Quaternion combined = newRotation.multiply(this.rotation);	
+
+		//Update
+		this.rotation = combined;
+		
+	}
 
 }
