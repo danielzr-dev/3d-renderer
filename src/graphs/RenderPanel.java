@@ -64,9 +64,9 @@ public class RenderPanel extends JPanel {
 			
 			//3D Triangles transform
 			for(Triangle3D tri3D : triangles3D) {
-				Vertex v1 = pipeline.transformVertex(tri3D.getA(), getWidth(), getHeight());
-				Vertex v2 = pipeline.transformVertex(tri3D.getB(), getWidth(), getHeight());
-				Vertex v3 = pipeline.transformVertex(tri3D.getC(), getWidth(), getHeight());
+				Vertex v1 = pipeline.transformVertex(tri3D.getA(), tri3D.getTransformMatrix(), getWidth(), getHeight());
+				Vertex v2 = pipeline.transformVertex(tri3D.getB(), tri3D.getTransformMatrix(), getWidth(), getHeight());
+				Vertex v3 = pipeline.transformVertex(tri3D.getC(), tri3D.getTransformMatrix(), getWidth(), getHeight());
 				
 				Triangle2D tri2D = new Triangle2D(v1, v2, v3, tri3D.getColor());
 				rasterizer.paintTriangle(tri2D);

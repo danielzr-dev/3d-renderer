@@ -17,13 +17,14 @@ public class TransformPipeline {
 			
 	}
 	
-	public Vertex transformVertex(Vertex3D ver3D, int screenWith, int screenHeight) {
+	public Vertex transformVertex(Vertex3D ver3D, Matrix4by4 triTransform, int screenWith, int screenHeight) {
 		Vertex v = new Vertex(screenHeight, screenHeight);
-		Vertex3D v1 = modelMatrix.multiply(ver3D);
-		Vertex3D v2 = viewMatrix.multiply(v1);
-		Vertex3D v3 = projectionMatrix.multiply(v2);
+		Vertex3D v1 = triTransform.multiply(ver3D);  
+		Vertex3D v2 = modelMatrix.multiply(v1);
+		Vertex3D v3 = viewMatrix.multiply(v2);
+		Vertex3D v4 = projectionMatrix.multiply(v3);
 	
-		return mapToViewport(v3, screenWith, screenHeight );
+		return mapToViewport(v4, screenWith, screenHeight );
 	
 	}
 	
@@ -33,5 +34,7 @@ public class TransformPipeline {
 		
 		return new Vertex(screenX, screenY);
 	}
+	
+
 
 }

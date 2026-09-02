@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Color;
 
+import math.Matrix4by4;
 import math.Vertex3D;
 
 public class Triangle3D {
@@ -10,6 +11,7 @@ public class Triangle3D {
 	private Vertex3D b;
 	private Vertex3D c;
 	private Color color;
+	private Matrix4by4 transformMatrix;
 	
 	public Triangle3D(Vertex3D a, Vertex3D b, Vertex3D c, Color color) {
 	
@@ -17,6 +19,7 @@ public class Triangle3D {
 		this.b = b;
 		this.c = c;
 		this.color = color;
+		this.transformMatrix = new Matrix4by4();
 	}
 
 	public Vertex3D getA() {
@@ -33,6 +36,11 @@ public class Triangle3D {
 
 	public Color getColor() {
 		return color;
+	}
+	
+	public Matrix4by4 getTransformMatrix() {
+		return transformMatrix;
+		
 	}
 
 }
