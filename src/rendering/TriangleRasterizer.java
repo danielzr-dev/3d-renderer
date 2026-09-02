@@ -16,8 +16,12 @@ public class TriangleRasterizer {
 	}
 	
 	public void paintPixel(int x, int y, Color color) {
-		bufferedImage.setRGB(x, y, color.getRGB());
-		
+		if( x>= 0 && x < bufferedImage.getWidth() &&
+			y>= 0 && y < bufferedImage.getHeight()) {
+			bufferedImage.setRGB(x, y, color.getRGB());
+			
+		}
+
 	}
 	
 	public void paintTriangle(Triangle2D tri) {
