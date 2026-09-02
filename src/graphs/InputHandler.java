@@ -2,6 +2,8 @@ package graphs;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashSet;
+import java.util.Set;
 
 import math.Direction3D;
 import math.Quaternion;
@@ -9,6 +11,7 @@ import math.Quaternion;
 public class InputHandler implements KeyListener {
 	
 	private Camera camera;
+	private Set<Integer> keysPressed = new HashSet<>();
 	
 	public InputHandler(Camera camera) {
 		this.camera = camera;
@@ -16,6 +19,8 @@ public class InputHandler implements KeyListener {
 	}
 	
 
+	
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		
@@ -23,40 +28,45 @@ public class InputHandler implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		int key = e.getKeyCode();
-		float rotationSpeed = 5.0f;
-		
-		if(key == KeyEvent.VK_W) {
-			//Rotate over left Y axis
-			Direction3D yAxis = new Direction3D(0, 1, 0);
-			Quaternion rotation = new Quaternion(rotationSpeed, yAxis);
-			camera.rotate(rotation);
-		}
-		else if(key == KeyEvent.VK_S){
-			//Rotate over rigth Y axis
-			Direction3D yAxis = new Direction3D(0, 1, 0);
-			Quaternion rotation = new Quaternion(-rotationSpeed, yAxis);
-			camera.rotate(rotation);
-		}
-		else if(key == KeyEvent.VK_A) {
-			//Rotate over X(up)
-			Direction3D xAxis = new Direction3D(1, 0, 0);
-			Quaternion rotation = new Quaternion(rotationSpeed, xAxis);
-			camera.rotate(rotation);
-		}
-		else if(key == KeyEvent.VK_D) {
-			//Rotate over X(down)
-			Direction3D xAxis = new Direction3D(1, 0, 0);
-			Quaternion rotation = new Quaternion(-rotationSpeed, xAxis);
-			camera.rotate(rotation);
-		}	
+		keysPressed.add(e.getKeyCode());
 		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+		keysPressed.remove(e.getKeyCode());
 		
+	}
+	
+	public void update() {
+		
+		float rotationSpeed = 0.01f;
+		
+		if(keysPressed.contains(KeyEvent.VK_W)) {
+			//Rotate over left Y axis
+			Direction3D xAxis = new Direction3D(1, 0, 0);
+			Quaternion rotation = new Quaternion(rotationSpeed, xAxis);
+			camera.rotate(rotation);
+		}
+		if(keysPressed.contains(KeyEvent.VK_S)){
+			//Rotate over rigth Y axis
+			Direction3D xAxis = new Direction3D(1, 0, 0);
+			Quaternion rotation = new Quaternion(-rotationSpeed, xAxis);
+			camera.rotate(rotation);
+		}
+		if(keysPressed.contains(KeyEvent.VK_A)) {
+			//Rotate over X(up)
+			Direction3D yAxis = new Direction3D(0, 1, 0);
+			Quaternion rotation = new Quaternion(rotationSpeed, yAxis);
+			camera.rotate(rotation);
+		}
+		if(keysPressed.contains(KeyEvent.VK_D)) {
+			//Rotate over X(down)
+			Direction3D yAxis = new Direction3D(0, 1, 0);
+			Quaternion rotation = new Quaternion(-rotationSpeed, yAxis);
+			camera.rotate(rotation);
+			
+		}	
 	}
 
 }
