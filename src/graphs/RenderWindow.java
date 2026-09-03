@@ -3,6 +3,7 @@ package graphs;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 
 import javax.swing.JFrame;
 
@@ -12,6 +13,7 @@ import math.Quaternion;
 import math.Transformations;
 import math.Vertex;
 import math.Vertex3D;
+import model.Cube;
 import model.Triangle2D;
 import model.Triangle3D;
 
@@ -23,10 +25,8 @@ public class RenderWindow {
 
 	public RenderWindow() {
 		
-		
 		this.myFrame = new JFrame("Renderizador 3D");
 		this.renderPanel = new RenderPanel(1980, 1080);
-		this.loopRender = new RenderLoop(renderPanel);
 		
 		this.myFrame.add(this.renderPanel);
 		this.myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,6 +46,8 @@ public class RenderWindow {
 		InputHandler inputHandler = new InputHandler(camera);
 		this.myFrame.addKeyListener(inputHandler);
 		this.myFrame.setFocusable(true);
+		
+		this.loopRender = new RenderLoop(renderPanel, inputHandler);
 		
 		//Adding to panel
 		this.renderPanel.setMatrices(modelMatrix,projectionMatrix);
@@ -72,6 +74,12 @@ public class RenderWindow {
 		
 		
 		this.renderPanel.addTriangle(tri2);
+		
+		Cube cube = new Cube();
+		List<Triangle3D> cubeTriangles = cube.getTriangles();
+		for(Triangle3D triangle: cubeTriangles) {
+			this.renderPanel.addTriangle(triangle);
+		}
 	
 
 	  /*Vertex v1 = new Vertex(100, 100);

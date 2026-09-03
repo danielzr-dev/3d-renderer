@@ -13,13 +13,23 @@ public class Triangle3D {
 	private Color color;
 	private Matrix4by4 transformMatrix;
 	
-	public Triangle3D(Vertex3D a, Vertex3D b, Vertex3D c, Color color) {
+
 	
+	public Triangle3D(Vertex3D a, Vertex3D b, Vertex3D c, Color color) {
 		this.a = a;
 		this.b = b;
 		this.c = c;
 		this.color = color;
-		this.transformMatrix = new Matrix4by4();
+		
+	}
+
+	public Triangle3D(Vertex3D a, Vertex3D b, Vertex3D c, Color color, Matrix4by4 transform) {
+		this.a = a;
+		this.b = b;
+		this.c = c;
+		this.color = color;
+		this.transformMatrix = transform;
+		
 	}
 
 	public Vertex3D getA() {

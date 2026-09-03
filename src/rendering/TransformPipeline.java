@@ -18,6 +18,11 @@ public class TransformPipeline {
 	}
 	
 	public Vertex transformVertex(Vertex3D ver3D, Matrix4by4 triTransform, int screenWith, int screenHeight) {
+		
+		if(triTransform == null) {
+			triTransform = new Matrix4by4();
+		}
+		
 		Vertex v = new Vertex(screenHeight, screenHeight);
 		Vertex3D v1 = triTransform.multiply(ver3D);  
 		Vertex3D v2 = modelMatrix.multiply(v1);
@@ -34,7 +39,5 @@ public class TransformPipeline {
 		
 		return new Vertex(screenX, screenY);
 	}
-	
-
 
 }
