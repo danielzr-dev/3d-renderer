@@ -18,9 +18,6 @@ public class InputHandler implements KeyListener {
 		
 	}
 	
-
-	
-	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		
@@ -67,6 +64,26 @@ public class InputHandler implements KeyListener {
 			camera.rotate(rotation);
 			
 		}	
+		
+		if(keysPressed.contains(KeyEvent.VK_UP)) {
+			//Moves camera forward
+			camera.move(0,0, -0.1f);
+		}
+		if(keysPressed.contains(KeyEvent.VK_DOWN)){
+			//Moves camera backwards
+			camera.move(0,0, 0.1f);
+		}
+		if(keysPressed.contains(KeyEvent.VK_LEFT)) {
+			//Moves camera to the left
+			camera.move(-0.1f, 0, 0);
+		}
+		if(keysPressed.contains(KeyEvent.VK_RIGHT)) {
+			//Moves camera to the right
+			camera.move(0.1f, 0, 0);
+			
+		}	
+		
+		
 	}
 
 }

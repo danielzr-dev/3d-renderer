@@ -1,5 +1,8 @@
 package graphs;
 
+import java.awt.event.KeyEvent;
+
+import math.Direction3D;
 import math.Matrix4by4;
 import math.Quaternion;
 import math.Transformations;
@@ -40,6 +43,13 @@ public class Camera {
 
 		//Update
 		this.rotation = combined;
+		
+	}
+	
+	public void move(float x, float y, float z) {
+		this.position.x += x;
+		this.position.y += y;
+		this.position.z += z;
 		
 	}
 
