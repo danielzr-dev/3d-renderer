@@ -40,7 +40,9 @@ public class Camera {
 		
 		//Quaternion multiplication
 		Quaternion combined = newRotation.multiply(this.rotation);	
-
+		
+		combined.normalize();
+		
 		//Update
 		this.rotation = combined;
 		

@@ -53,18 +53,21 @@ public class Triangle3D {
 		return transformMatrix;
 		
 	}
-	
-	public boolean isFrontFacing(Vertex3D cameraPos) {
 		
-		Direction3D edge1 = this.b.subtract(this.a);
-		Direction3D edge2 = this.c.subtract(this.a);
-		
-		Direction3D directionCamera = cameraPos.subtract(this.a);
-		Direction3D normal = edge1.crossProduct(edge2);
-		float dotProduct = normal.dotProduct(directionCamera);
-		
-		return dotProduct > 0;
-		
-	}
+		public boolean isFrontFacing(Vertex3D cameraPos) {
+			
+			Direction3D edge1 = this.b.subtract(this.a);
+			Direction3D edge2 = this.c.subtract(this.a);
+			
+			Direction3D directionCamera = cameraPos.subtract(this.a);
+			Direction3D normal = edge1.crossProduct(edge2);
+			float dotProduct = normal.dotProduct(directionCamera);
+			
+			System.out.println("Triangle: " + this.color + " | Dot: " + dotProduct);
+			
+			return normal.dotProduct(directionCamera) > 0;
+				
+			
+		}
 
 }

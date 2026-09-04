@@ -2,19 +2,19 @@ package math;
 
 public class Vertex {
 	
-	public double x;
-	double y;
+	private float x;
+	private float y;
 	
-	public Vertex (double x, double y) {
+	public Vertex (float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public double getX() {
+	public float getX() {
 		return x;
 	}
 
-	public double getY() {
+	public float getY() {
 		return y;
 	}
 	

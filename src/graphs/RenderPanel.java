@@ -97,7 +97,7 @@ public class RenderPanel extends JPanel {
 			
 			//Cube triangles
 			for(Triangle3D cubeTri: cubeTriangles) {
-		
+				
 				if(!cubeTri.isFrontFacing(camera.getPosition())) {
 					continue;
 				}
@@ -106,6 +106,12 @@ public class RenderPanel extends JPanel {
 				Vertex v3 = pipeline.transformVertex(cubeTri.getC(), cubeTransformMatrix, getWidth(), getHeight());
 				
 				Triangle2D tri2D = new Triangle2D(v1, v2, v3, cubeTri.getColor());
+				
+				//Valid triangles check
+				if(!isValidVertex(v1) || !isValidVertex(v2) || !isValidVertex(v3)) {
+					continue;
+				}
+				
 				rasterizer.paintTriangle(tri2D);
 			}
 			
@@ -147,6 +153,10 @@ public class RenderPanel extends JPanel {
 		Matrix4by4 rotaZ = Transformations.rotation(cubeRotationZ, zAxis);
 		
 		cubeTransformMatrix = rotaX.multiply(rotaY).multiply(rotaZ);
+	}
+	
+	private boolean isValidVertex(Vertex v) {
+		return !Float.isNaN(v.getX()) && !Float.isNaN(v.getY());
 	}
 	
 	

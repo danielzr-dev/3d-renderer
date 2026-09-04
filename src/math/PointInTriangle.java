@@ -6,23 +6,23 @@ public class PointInTriangle {
 	
 	public static boolean isInside (Vertex a, Vertex b, Vertex c, Vertex p) {
 
-		double denominator = ((b.y - c.y) * (a.x - c.x) + 
-						   (c.x - b.x) * (a.y - c.y));
+		float denominator = ((b.getY() - c.getY()) * (a.getX() - c.getX()) + 
+						   (c.getX() - b.getX()) * (a.getY() - c.getY()));
 		
-		double vertexA = ((b.y - c.y) * (p.x - c.x) +
-					(c.x - b.x) * (p.y - c.y)) / denominator;
+		float vertexA = ((b.getY() - c.getY()) * (p.getX() - c.getX()) +
+					(c.getX() - b.getX()) * (p.getY() - c.getY())) / denominator;
 		
-		double vertexB  = ((c.y - a.y) * (p.x - c.x) +
-				    (a.x - c.x) * (p.y - c.y)) / denominator;
+		float vertexB  = ((c.getY() - a.getY()) * (p.getX() - c.getX()) +
+				    (a.getX() - c.getX()) * (p.getY() - c.getY())) / denominator;
 		
-		double vertexC = 1 - vertexA - vertexB;
+		float vertexC = 1 - vertexA - vertexB;
 		
 		return (vertexA >=0 && vertexB >= 0 && vertexC>= 0);
 		
 	}
 	
 	public static boolean isInside(Vertex A, Vertex B, Vertex C, 
-			double px, double py ) {
+			float px, float py ) {
 		Vertex P = new Vertex(px, py);
 		return isInside(A, B, C, P);
 	}
