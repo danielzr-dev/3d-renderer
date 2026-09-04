@@ -53,4 +53,9 @@ public class Camera {
 		
 	}
 
+	public Vertex3D getPosition() {
+		
+		return position;
+	}
+
 }

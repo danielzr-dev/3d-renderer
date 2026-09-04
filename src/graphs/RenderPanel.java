@@ -9,7 +9,9 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import math.Direction3D;
 import math.Matrix4by4;
+import math.Transformations;
 import math.Vertex;
 import model.Triangle2D;
 import model.Triangle3D;
@@ -25,7 +27,13 @@ public class RenderPanel extends JPanel {
 	private List<Triangle3D> triangles3D;
 	private Matrix4by4 modelMatrix;
 	private Matrix4by4 projectionMatrix;
+	private Matrix4by4 cubeTransformMatrix = new Matrix4by4();
+	private List<Triangle3D> cubeTriangles = new ArrayList<>();
 	private Camera camera;
+	
+	private float cubeRotationX = 0.0f;
+	private float cubeRotationY = 0.0f;
+	private float cubeRotationZ = 0.0f;
 
 	
 	public RenderPanel(int width, int height) {
@@ -45,6 +53,10 @@ public class RenderPanel extends JPanel {
 		triangles3D.add(triangle);
 	}
 	
+	public void addCubeTriangle(Triangle3D triangle) {
+		cubeTriangles.add(triangle);
+	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -62,15 +74,39 @@ public class RenderPanel extends JPanel {
 			TransformPipeline pipeline = new TransformPipeline(modelMatrix, viewMatrix
 					, projectionMatrix);
 			
-			//3D Triangles transform
-			for(Triangle3D tri3D : triangles3D) {
-				Vertex v1 = pipeline.transformVertex(tri3D.getA(), tri3D.getTransformMatrix(), getWidth(), getHeight());
-				Vertex v2 = pipeline.transformVertex(tri3D.getB(), tri3D.getTransformMatrix(), getWidth(), getHeight());
-				Vertex v3 = pipeline.transformVertex(tri3D.getC(), tri3D.getTransformMatrix(), getWidth(), getHeight());
+			/*
+			 * //3D Triangles transform for(Triangle3D tri3D : triangles3D) {
+			 * 
+			 * //Backface culling
+			 * 
+			 * if(!tri3D.isFrontFacing(camera.getPosition())) { continue; }
+			 * 
+			 * Vertex v1 = pipeline.transformVertex(tri3D.getA(),
+			 * tri3D.getTransformMatrix(), getWidth(), getHeight()); Vertex v2 =
+			 * pipeline.transformVertex(tri3D.getB(), tri3D.getTransformMatrix(),
+			 * getWidth(), getHeight()); Vertex v3 = pipeline.transformVertex(tri3D.getC(),
+			 * tri3D.getTransformMatrix(), getWidth(), getHeight());
+			 * 
+			 * Triangle2D tri2D = new Triangle2D(v1, v2, v3, tri3D.getColor());
+			 * rasterizer.paintTriangle(tri2D);
+			 * 
+			 * }
+			 */
+			
+			updateCubeTransformMatrix();
+			
+			//Cube triangles
+			for(Triangle3D cubeTri: cubeTriangles) {
+		
+				if(!cubeTri.isFrontFacing(camera.getPosition())) {
+					continue;
+				}
+				Vertex v1 = pipeline.transformVertex(cubeTri.getA(), cubeTransformMatrix, getWidth(), getHeight());
+				Vertex v2 = pipeline.transformVertex(cubeTri.getB(), cubeTransformMatrix, getWidth(), getHeight());
+				Vertex v3 = pipeline.transformVertex(cubeTri.getC(), cubeTransformMatrix, getWidth(), getHeight());
 				
-				Triangle2D tri2D = new Triangle2D(v1, v2, v3, tri3D.getColor());
+				Triangle2D tri2D = new Triangle2D(v1, v2, v3, cubeTri.getColor());
 				rasterizer.paintTriangle(tri2D);
-				
 			}
 			
 		}
@@ -92,6 +128,25 @@ public class RenderPanel extends JPanel {
 	public void setCamera(Camera camera) {
 		this.camera = camera;
 		
+	}
+	
+	public void updateCubeRotation(float deltaX, float deltaY, float deltaZ) {
+		cubeRotationX += deltaX;
+		cubeRotationY += deltaY;
+		cubeRotationZ += deltaZ;
+		
+	}
+	
+	private void updateCubeTransformMatrix() {
+		Direction3D xAxis = new Direction3D(1,0,0);
+		Direction3D yAxis = new Direction3D(0,1,0);
+		Direction3D zAxis = new Direction3D(0,0,1);
+		
+		Matrix4by4 rotaX = Transformations.rotation(cubeRotationX, xAxis);
+		Matrix4by4 rotaY = Transformations.rotation(cubeRotationY, yAxis);
+		Matrix4by4 rotaZ = Transformations.rotation(cubeRotationZ, zAxis);
+		
+		cubeTransformMatrix = rotaX.multiply(rotaY).multiply(rotaZ);
 	}
 	
 	

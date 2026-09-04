@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Color;
 
+import math.Direction3D;
 import math.Matrix4by4;
 import math.Vertex3D;
 
@@ -50,6 +51,19 @@ public class Triangle3D {
 	
 	public Matrix4by4 getTransformMatrix() {
 		return transformMatrix;
+		
+	}
+	
+	public boolean isFrontFacing(Vertex3D cameraPos) {
+		
+		Direction3D edge1 = this.b.subtract(this.a);
+		Direction3D edge2 = this.c.subtract(this.a);
+		
+		Direction3D directionCamera = cameraPos.subtract(this.a);
+		Direction3D normal = edge1.crossProduct(edge2);
+		float dotProduct = normal.dotProduct(directionCamera);
+		
+		return dotProduct > 0;
 		
 	}
 

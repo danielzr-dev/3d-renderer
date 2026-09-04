@@ -27,29 +27,30 @@ public class Cube {
 		vertices[7] = new Vertex3D(-0.5f, -0.5f, -0.5f);
 		
 		//12 triangles
-		//Front face
-		triangles[0] = new Triangle3D(vertices[0], vertices[1], vertices[2], Color.MAGENTA);
-		triangles[1] = new Triangle3D(vertices[0], vertices[2], vertices[3], Color.MAGENTA);
-		
+
 		//Back face
-		triangles[2] = new Triangle3D(vertices[5], vertices[4], vertices[7], Color.GREEN);
-		triangles[3] = new Triangle3D(vertices[5], vertices[7], vertices[6], Color.GREEN);
+		triangles[0] = new Triangle3D(vertices[5], vertices[4], vertices[7], Color.green);
+		triangles[1] = new Triangle3D(vertices[5], vertices[7], vertices[6], Color.green);
 		
 		//Left face
-		triangles[4] = new Triangle3D(vertices[4], vertices[0], vertices[3], Color.BLUE);
-		triangles[5] = new Triangle3D(vertices[4], vertices[3], vertices[7], Color.BLUE);
+		triangles[2] = new Triangle3D(vertices[4], vertices[0], vertices[3], Color.blue);
+		triangles[3] = new Triangle3D(vertices[4], vertices[3], vertices[7], Color.blue);
 		
 		//Right face
-		triangles[6] = new Triangle3D(vertices[1], vertices[5], vertices[6], Color.WHITE);
-		triangles[7] = new Triangle3D(vertices[1], vertices[6], vertices[2], Color.WHITE);
+		triangles[4] = new Triangle3D(vertices[1], vertices[5], vertices[6], Color.gray);
+		triangles[5] = new Triangle3D(vertices[1], vertices[6], vertices[2], Color.gray);
 		
 		//Top face
-		triangles[8] = new Triangle3D(vertices[0], vertices[1], vertices[5], Color.LIGHT_GRAY);
-		triangles[9] = new Triangle3D(vertices[0], vertices[5], vertices[4], Color.LIGHT_GRAY);
+		triangles[6] = new Triangle3D(vertices[5], vertices[1], vertices[0], Color.red);
+		triangles[7] = new Triangle3D(vertices[4], vertices[5], vertices[0], Color.red);
 		
 		//Bottom face
-		triangles[10] = new Triangle3D(vertices[3], vertices[2], vertices[6], Color.ORANGE);
-		triangles[11] = new Triangle3D(vertices[3], vertices[6], vertices[7], Color.ORANGE);
+		triangles[8] = new Triangle3D(vertices[3], vertices[2], vertices[6], Color.orange);
+		triangles[9] = new Triangle3D(vertices[3], vertices[6], vertices[7], Color.orange);
+		
+		//Front face
+		triangles[10] = new Triangle3D(vertices[2], vertices[1], vertices[0], Color.MAGENTA);
+		triangles[11] = new Triangle3D(vertices[3], vertices[2], vertices[0], Color.MAGENTA);
 		
 	}
 	

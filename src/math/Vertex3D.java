@@ -33,5 +33,10 @@ public class Vertex3D {
 		
 	}
 	
+	public Direction3D subtract(Vertex3D other) {
+		
+		return new Direction3D(this.x - other.x, this.y -other.y, this.z - other.z);
+	}
+	
 
 }

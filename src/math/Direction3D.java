@@ -31,5 +31,19 @@ public class Direction3D {
 		return new Direction3D(normalizedX, normalizedY, normalizedZ);
 
 	}
+	
+	public Direction3D crossProduct(Direction3D other) {
+		
+		return new Direction3D(this.y * other.z - this.z * other.y,
+	            			   this.z * other.x - this.x * other.z,
+	                           this.x * other.y - this.y * other.x);
+		
+	}
+	
+	public float dotProduct(Direction3D other) {
+		
+		return (this.x * other.x) + (this.y * other.y) + (this.z * other.z);
+		
+	}
 
 }
