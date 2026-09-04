@@ -63,8 +63,6 @@ public class Triangle3D {
 			Direction3D normal = edge1.crossProduct(edge2);
 			float dotProduct = normal.dotProduct(directionCamera);
 			
-			System.out.println("Triangle: " + this.color + " | Dot: " + dotProduct);
-			
 			return normal.dotProduct(directionCamera) > 0;
 				
 			
