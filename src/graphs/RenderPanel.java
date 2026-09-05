@@ -95,9 +95,10 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 			//Cube triangles
 			for(Triangle3D cubeTri: cubeTriangles) {
 				
-				/*if(!cubeTri.isFrontFacing(camera.getPosition())) {
+				if(!cubeTri.isFrontFacing(camera.getPosition())) {
 					continue;
-				}*/
+				}
+				
 				Vertex v1 = pipeline.transformVertex(cubeTri.getA(), cubeTransformMatrix, getWidth(), getHeight());
 				Vertex v2 = pipeline.transformVertex(cubeTri.getB(), cubeTransformMatrix, getWidth(), getHeight());
 				Vertex v3 = pipeline.transformVertex(cubeTri.getC(), cubeTransformMatrix, getWidth(), getHeight());

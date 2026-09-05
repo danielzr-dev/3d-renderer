@@ -30,8 +30,8 @@ public class Cube {
 		
 		
 		//Back face
-		triangles[0] = new Triangle3D(vertices[4], vertices[5], vertices[7], Color.green);
-		triangles[1] = new Triangle3D(vertices[7], vertices[5], vertices[6], Color.green);
+		triangles[0] = new Triangle3D(vertices[4], vertices[6], vertices[5], Color.green);
+		triangles[1] = new Triangle3D(vertices[4], vertices[7], vertices[6], Color.green);
 	
 		//Left face
 		triangles[2] = new Triangle3D(vertices[4], vertices[0], vertices[3], Color.blue);
