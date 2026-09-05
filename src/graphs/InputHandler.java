@@ -12,9 +12,21 @@ public class InputHandler implements KeyListener {
 	
 	private Camera camera;
 	private Set<Integer> keysPressed = new HashSet<>();
+	private CubeController cubeController;
 	
-	public InputHandler(Camera camera) {
+	private static final float ROTATION_SPEED = 0.02f;
+	private static final float CUBE_ROTATION_SPEED = 0.02f;
+	
+	
+	public InputHandler(Camera camera, CubeController cubeController) {
 		this.camera = camera;
+		this.cubeController = cubeController;
+		
+	}
+	
+	
+	public interface CubeController {
+		void rotateCube(float dx, float dy, float dz);
 		
 	}
 	
@@ -82,6 +94,19 @@ public class InputHandler implements KeyListener {
 			camera.move(0.1f, 0, 0);
 			
 		}	
+		
+		if(keysPressed.contains(KeyEvent.VK_E)) {
+	        cubeController.rotateCube(CUBE_ROTATION_SPEED, 0, 0);  // Rota eje X
+	    }
+	    if(keysPressed.contains(KeyEvent.VK_Q)) {
+	        cubeController.rotateCube(-CUBE_ROTATION_SPEED, 0, 0);
+	    }
+	    if(keysPressed.contains(KeyEvent.VK_R)) {
+	        cubeController.rotateCube(0, CUBE_ROTATION_SPEED, 0);  // Rota eje Y
+	    }
+	    if(keysPressed.contains(KeyEvent.VK_F)) {
+	        cubeController.rotateCube(0, -CUBE_ROTATION_SPEED, 0);
+	    }
 		
 		
 	}

@@ -17,7 +17,7 @@ public class RenderLoop implements Runnable {
 		while(isRendering) {
 			inputHandler.update();
 			
-			myPanel.updateCubeRotation(0.00f, 0.035f, 0.0f); //Y rotation
+			//myPanel.updateCubeRotation(0.00f, 0.035f, 0.0f); //Y rotation
 			
 			myPanel.repaint();
 			try {

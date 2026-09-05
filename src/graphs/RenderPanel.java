@@ -19,7 +19,7 @@ import rendering.TriangleRasterizer;
 import rendering.TransformPipeline;
 
 
-public class RenderPanel extends JPanel {
+public class RenderPanel extends JPanel implements InputHandler.CubeController{
 	
 	private TriangleRasterizer rasterizer;
 	private List<Triangle2D> triangles;
@@ -157,6 +157,12 @@ public class RenderPanel extends JPanel {
 	
 	private boolean isValidVertex(Vertex v) {
 		return !Float.isNaN(v.getX()) && !Float.isNaN(v.getY());
+	}
+
+	@Override
+	public void rotateCube(float dx, float dy, float dz) {
+		updateCubeRotation(dx, dy, dz);
+		
 	}
 	
 	

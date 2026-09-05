@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import graphs.InputHandler.CubeController;
 import math.Direction3D;
 import math.Matrix4by4;
 import math.Quaternion;
@@ -22,7 +23,8 @@ public class RenderWindow {
 	private JFrame myFrame;
 	private RenderPanel renderPanel;
 	private RenderLoop loopRender;
-
+	private Camera camera;
+	
 	public RenderWindow() {
 		
 		this.myFrame = new JFrame("Renderizador 3D");
@@ -43,7 +45,9 @@ public class RenderWindow {
 		Quaternion cameraRotation = new Quaternion(0, 0, 0, 1); //Identity (without rotation
 		Camera camera = new Camera(cameraPosition, cameraRotation);
 		
-		InputHandler inputHandler = new InputHandler(camera);
+		
+		InputHandler inputHandler = new InputHandler(camera, renderPanel);
+		
 		this.myFrame.addKeyListener(inputHandler);
 		this.myFrame.setFocusable(true);
 		
