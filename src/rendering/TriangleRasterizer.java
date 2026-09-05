@@ -10,16 +10,22 @@ import model.Triangle2D;
 public class TriangleRasterizer {
 	
 	private BufferedImage bufferedImage;
+	private float[][] depthBuffer;
 	
-	public TriangleRasterizer(BufferedImage bufferedImage) {
+	public TriangleRasterizer(BufferedImage bufferedImage, float[][] depthBuffer) {
 		this.bufferedImage = bufferedImage;
+		this.depthBuffer = depthBuffer;
 	}
 	
-	public void paintPixel(int x, int y, Color color) {
+	public void paintPixel(int x, int y, Color color, float depth) {
 		if( x>= 0 && x < bufferedImage.getWidth() &&
 			y>= 0 && y < bufferedImage.getHeight()) {
-			bufferedImage.setRGB(x, y, color.getRGB());
 			
+			if(depth < depthBuffer[x][y]) {
+				bufferedImage.setRGB(x, y, color.getRGB());
+				depthBuffer[x][y] = depth;
+			}
+					
 		}
 
 	}
@@ -38,8 +44,17 @@ public class TriangleRasterizer {
 		
 		for(int y = minY; y <= maxY; y++) {
 			for(int x = minX; x<= maxX; x++) {
-				if(PointInTriangle.isInside(a, b, c, x, y)) {
-					paintPixel(x, y, color);
+				
+				float fx = (float) x;
+				float fy = (float) y;
+				
+				if(PointInTriangle.isInside(a, b, c, fx, fy)) {
+					float[] weights = PointInTriangle.getBarycentricCoordinates(a, b, c, fx, fy);
+					float interpolatedZ = weights[0] * tri.getZ_a() +
+							              weights[1] * tri.getZ_b() +
+							              weights[2] * tri.getZ_c();
+							
+					paintPixel(x, y, color, interpolatedZ);
 				}
 			}
 		}

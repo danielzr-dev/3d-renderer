@@ -30,6 +30,7 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 	private Matrix4by4 cubeTransformMatrix = new Matrix4by4();
 	private List<Triangle3D> cubeTriangles = new ArrayList<>();
 	private Camera camera;
+	private float[][] depthBuffer;
 	
 	private float cubeRotationX = 0.0f;
 	private float cubeRotationY = 0.0f;
@@ -38,9 +39,16 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 	
 	public RenderPanel(int width, int height) {
 		this.bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		this.rasterizer = new TriangleRasterizer(bufferedImage);
+		this.depthBuffer = new float[width][height];
+		this.rasterizer = new TriangleRasterizer(bufferedImage, depthBuffer);
 		this.triangles= new ArrayList<>();
 		this.triangles3D = new ArrayList<>();
+		
+		for(int y =0; y < height; y++) {
+			for(int x = 0; x < width; x++) {
+				depthBuffer[x][y] = Float.MAX_VALUE;
+			}
+		}
 		
 		setPreferredSize(new java.awt.Dimension(width, height));
 	}
@@ -67,6 +75,13 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 		g2d.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 		g2d.dispose();
 		
+		for(int y = 0; y < bufferedImage.getHeight(); y++) {
+			for(int x = 0; x < bufferedImage.getWidth();	 x++) {
+				depthBuffer[x][y] = Float.MAX_VALUE;
+			}
+		}
+		
+		
 		//Pipeline for vertex transformation 3D -> 2D
 		
 		if(camera != null && modelMatrix != null && projectionMatrix != null) {
@@ -74,38 +89,21 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 			TransformPipeline pipeline = new TransformPipeline(modelMatrix, viewMatrix
 					, projectionMatrix);
 			
-			/*
-			 * //3D Triangles transform for(Triangle3D tri3D : triangles3D) {
-			 * 
-			 * //Backface culling
-			 * 
-			 * if(!tri3D.isFrontFacing(camera.getPosition())) { continue; }
-			 * 
-			 * Vertex v1 = pipeline.transformVertex(tri3D.getA(),
-			 * tri3D.getTransformMatrix(), getWidth(), getHeight()); Vertex v2 =
-			 * pipeline.transformVertex(tri3D.getB(), tri3D.getTransformMatrix(),
-			 * getWidth(), getHeight()); Vertex v3 = pipeline.transformVertex(tri3D.getC(),
-			 * tri3D.getTransformMatrix(), getWidth(), getHeight());
-			 * 
-			 * Triangle2D tri2D = new Triangle2D(v1, v2, v3, tri3D.getColor());
-			 * rasterizer.paintTriangle(tri2D);
-			 * 
-			 * }
-			 */
 			
 			updateCubeTransformMatrix();
 			
 			//Cube triangles
 			for(Triangle3D cubeTri: cubeTriangles) {
 				
-				if(!cubeTri.isFrontFacing(camera.getPosition())) {
+				/*if(!cubeTri.isFrontFacing(camera.getPosition())) {
 					continue;
-				}
+				}*/
 				Vertex v1 = pipeline.transformVertex(cubeTri.getA(), cubeTransformMatrix, getWidth(), getHeight());
 				Vertex v2 = pipeline.transformVertex(cubeTri.getB(), cubeTransformMatrix, getWidth(), getHeight());
 				Vertex v3 = pipeline.transformVertex(cubeTri.getC(), cubeTransformMatrix, getWidth(), getHeight());
 				
-				Triangle2D tri2D = new Triangle2D(v1, v2, v3, cubeTri.getColor());
+				Triangle2D tri2D = new Triangle2D(v1, v2, v3, cubeTri.getColor(),
+												  v1.getZ(), v2.getZ(), v3.getZ());
 				
 				//Valid triangles check
 				if(!isValidVertex(v1) || !isValidVertex(v2) || !isValidVertex(v3)) {
