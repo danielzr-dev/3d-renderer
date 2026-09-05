@@ -52,6 +52,15 @@ public class TriangleRasterizer {
 		double maxY = Math.max(tri.getA().getY(), Math.max(tri.getB().getY(), tri.getC().getY()));
 		double minY = Math.min(tri.getA().getY(), Math.min(tri.getB().getY(), tri.getC().getY()));
 		
+		//Clamp for viewport
+		int width = bufferedImage.getWidth();
+		int height = bufferedImage.getHeight();
+		
+		minX = Math.max((int) minX, 0);
+		maxX  = Math.min((int) maxX, width-1);
+		minY = Math.max((int) minY, 0);
+		maxY = Math.min((int) maxY, height -1);
+		
 		return new int[] {(int) minX, (int) maxX, (int) minY, (int) maxY};
 	}
 

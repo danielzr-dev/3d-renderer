@@ -60,10 +60,10 @@ public class Triangle3D {
 			Direction3D edge2 = this.c.subtract(this.a);
 			
 			Direction3D directionCamera = cameraPos.subtract(this.a);
-			Direction3D normal = edge1.crossProduct(edge2);
+			Direction3D normal = edge1.crossProduct(edge2).normalize();
 			float dotProduct = normal.dotProduct(directionCamera);
 			
-			return normal.dotProduct(directionCamera) > 0;
+			return dotProduct > 0;
 				
 			
 		}
