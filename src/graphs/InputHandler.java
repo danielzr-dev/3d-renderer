@@ -4,23 +4,25 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Set;
-
 import math.Direction3D;
 import math.Quaternion;
+import model.Cube;
+import model.Pyramid;
+import rendering.ModelRenderer;
 
 public class InputHandler implements KeyListener {
 	
 	private Camera camera;
 	private Set<Integer> keysPressed = new HashSet<>();
-	private CubeController cubeController;
+	private ModelRenderer modelRenderer;
 	
 	private static final float ROTATION_SPEED = 0.02f;
 	private static final float CUBE_ROTATION_SPEED = 0.02f;
 	
 	
-	public InputHandler(Camera camera, CubeController cubeController) {
+	public InputHandler(Camera camera, ModelRenderer modelRenderer) {
 		this.camera = camera;
-		this.cubeController = cubeController;
+		this.modelRenderer = modelRenderer;
 		
 	}
 	
@@ -39,6 +41,17 @@ public class InputHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		keysPressed.add(e.getKeyCode());
 		
+		switch(e.getKeyCode()) {
+			case KeyEvent.VK_C:
+				modelRenderer.setActiveModel(new Cube());
+				System.out.println("MODELO: CUBE");
+				break;
+			case KeyEvent.VK_P:
+				modelRenderer.setActiveModel(new Pyramid());
+				System.out.println("MODEL: PYRAMID");
+				break;
+		}
+		
 	}
 
 	@Override
@@ -49,7 +62,7 @@ public class InputHandler implements KeyListener {
 	
 	public void update() {
 		
-		float rotationSpeed = 0.01f;
+		float rotationSpeed = 0.03f;
 		
 		if(keysPressed.contains(KeyEvent.VK_W)) {
 			//Rotate over left Y axis
@@ -96,19 +109,20 @@ public class InputHandler implements KeyListener {
 		}	
 		
 		if(keysPressed.contains(KeyEvent.VK_E)) {
-	        cubeController.rotateCube(CUBE_ROTATION_SPEED, 0, 0);  // Rota eje X
+	        modelRenderer.updateRotation(rotationSpeed, 0, 0);
 	    }
 	    if(keysPressed.contains(KeyEvent.VK_Q)) {
-	        cubeController.rotateCube(-CUBE_ROTATION_SPEED, 0, 0);
+	        modelRenderer.updateRotation(-rotationSpeed, 0, 0);
 	    }
 	    if(keysPressed.contains(KeyEvent.VK_R)) {
-	        cubeController.rotateCube(0, CUBE_ROTATION_SPEED, 0);  // Rota eje Y
+	        modelRenderer.updateRotation(0, rotationSpeed, 0); 
 	    }
 	    if(keysPressed.contains(KeyEvent.VK_F)) {
-	        cubeController.rotateCube(0, -CUBE_ROTATION_SPEED, 0);
+	        modelRenderer.updateRotation(0, -rotationSpeed, 0);
 	    }
-		
-		
-	}
+	    
 
+	}
+	
+	 
 }
