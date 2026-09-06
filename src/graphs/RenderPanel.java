@@ -97,19 +97,22 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 			Model3D activeModel = modelRenderer.getActiveModel();
 			
 			if(activeModel != null ) {
+				
+				activeModel.setTransform(modelTransform);
+				
 				List<Triangle3D> modelTriangles = activeModel.getTriangles();
 				
-				for(Triangle3D cubeTri: activeModel.getTriangles()) {
+				for(Triangle3D tri: activeModel.getTriangles()) {
 					
-					if(!cubeTri.isFrontFacing(camera.getPosition())) {
+					if(!tri.isFrontFacing(camera.getPosition())) {
 						continue;
 					}
 					
-					Vertex v1 = pipeline.transformVertex(cubeTri.getA(), modelTransform, getWidth(), getHeight());
-					Vertex v2 = pipeline.transformVertex(cubeTri.getB(), modelTransform, getWidth(), getHeight());
-					Vertex v3 = pipeline.transformVertex(cubeTri.getC(), modelTransform, getWidth(), getHeight());
+					Vertex v1 = pipeline.transformVertex(tri.getA(), modelTransform, getWidth(), getHeight());
+					Vertex v2 = pipeline.transformVertex(tri.getB(), modelTransform, getWidth(), getHeight());
+					Vertex v3 = pipeline.transformVertex(tri.getC(), modelTransform, getWidth(), getHeight());
 					
-					Triangle2D tri2D = new Triangle2D(v1, v2, v3, cubeTri.getColor(),
+					Triangle2D tri2D = new Triangle2D(v1, v2, v3, tri.getColor(),
 													  v1.getZ(), v2.getZ(), v3.getZ());
 					
 					//Valid triangles check
