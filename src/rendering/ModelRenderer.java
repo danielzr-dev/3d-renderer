@@ -53,6 +53,11 @@ public class ModelRenderer {
 		
 	}
 	
+	public void setActiveModel(Model3D model) {
+		this.activeModel = model;
+		updateTransformMatrix();
+	}
+	
 	public Model3D getActiveModel() {
 		return activeModel;
 	}
