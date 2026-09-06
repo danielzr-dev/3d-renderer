@@ -12,11 +12,12 @@ import math.Direction3D;
 import math.Matrix4by4;
 import math.Quaternion;
 import math.Transformations;
-import math.Vertex;
 import math.Vertex3D;
 import model.Cube;
-import model.Triangle2D;
+import model.Model3D;
 import model.Triangle3D;
+import rendering.ModelRenderer;
+
 
 public class RenderWindow {
 
@@ -24,6 +25,7 @@ public class RenderWindow {
 	private RenderPanel renderPanel;
 	private RenderLoop loopRender;
 	private Camera camera;
+	private ModelRenderer modelRenderer;
 	
 	public RenderWindow() {
 		
@@ -46,6 +48,9 @@ public class RenderWindow {
 		Camera camera = new Camera(cameraPosition, cameraRotation);
 		
 		
+		Model3D cube = new Cube();
+		this.modelRenderer = new ModelRenderer(cube);
+		
 		InputHandler inputHandler = new InputHandler(camera, renderPanel);
 		
 		this.myFrame.addKeyListener(inputHandler);
@@ -54,43 +59,12 @@ public class RenderWindow {
 		this.loopRender = new RenderLoop(renderPanel, inputHandler);
 		
 		//Adding to panel
-		this.renderPanel.setMatrices(modelMatrix,projectionMatrix);
 		this.renderPanel.setCamera(camera);
+		this.renderPanel.setMatrices(modelMatrix,projectionMatrix);
+		this.renderPanel.setModelRenderer(modelRenderer);
 		
-		
-		//Triangle 1 
-		/*
-		 * Vertex3D a = new Vertex3D( 0.0f, 1.0f, 0.0f); Vertex3D b = new
-		 * Vertex3D(-1.0f, -1.0f, 0.0f); Vertex3D c = new Vertex3D( 1.0f, -1.0f, 0.0f);
-		 * Triangle3D tri3D = new Triangle3D(a, b, c, Color.RED);//(no rotation)
-		 * this.renderPanel.addTriangle(tri3D);
-		 */
-		
-		/*// Triangle 2 
-		Vertex3D d = new Vertex3D(2.0f, 1.0f, 0.0f);
-		Vertex3D e = new Vertex3D(1.0f, -1.0f, 0.0f);
-		Vertex3D f = new Vertex3D(3.0f, -1.0f, 0.0f);
-		
-		//45 degree rotation
-		Direction3D zAxis = new Direction3D(0, 0, 1);
-		Matrix4by4 rota45 = Transformations.rotation(45.f, zAxis);
-		Triangle3D tri2 = new Triangle3D(d, e, f, Color.BLUE, rota45);
-		
-		this.renderPanel.addTriangle(tri2);*/
-		
-		Cube cube = new Cube();
-		List<Triangle3D> cubeTriangles = cube.getTriangles();
-		for(Triangle3D triangle: cubeTriangles) {
-			this.renderPanel.addCubeTriangle(triangle);
-		}
+		this.loopRender = new RenderLoop(renderPanel, inputHandler);
 	
-
-	  /*Vertex v1 = new Vertex(100, 100);
-	  Vertex v2 = new Vertex(400, 150);
-	  Vertex v3= new Vertex(250, 400); Triangle2D tri = new Triangle2D(v1, v2, v3,
-	  Color.RED); this.renderPanel.addTriangle(tri);*/
-
-		
 		Thread thread = new Thread(loopRender);
 		thread.start();
 		
