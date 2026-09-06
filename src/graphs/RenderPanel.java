@@ -13,9 +13,11 @@ import math.Direction3D;
 import math.Matrix4by4;
 import math.Transformations;
 import math.Vertex;
+import model.Model3D;
 import model.Triangle2D;
 import model.Triangle3D;
 import rendering.TriangleRasterizer;
+import rendering.ModelRenderer;
 import rendering.TransformPipeline;
 
 
@@ -25,16 +27,12 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 	private List<Triangle2D> triangles;
 	private BufferedImage bufferedImage;
 	private List<Triangle3D> triangles3D;
-	private Matrix4by4 modelMatrix;
-	private Matrix4by4 projectionMatrix;
-	private Matrix4by4 cubeTransformMatrix = new Matrix4by4();
-	private List<Triangle3D> cubeTriangles = new ArrayList<>();
 	private Camera camera;
 	private float[][] depthBuffer;
+	private ModelRenderer modelRenderer;
+	private Matrix4by4 modelMatrix;
+	private Matrix4by4 projectionMatrix;
 	
-	private float cubeRotationX = 0.0f;
-	private float cubeRotationY = 0.0f;
-	private float cubeRotationZ = 0.0f;
 
 	
 	public RenderPanel(int width, int height) {
@@ -61,10 +59,10 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 		triangles3D.add(triangle);
 	}
 	
-	public void addCubeTriangle(Triangle3D triangle) {
-		cubeTriangles.add(triangle);
+	public void setModelRenderer(ModelRenderer modelRenderer) {
+		this.modelRenderer = modelRenderer;
 	}
-	
+	 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -85,35 +83,43 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 		//Pipeline for vertex transformation 3D -> 2D
 		
 		if(camera != null && modelMatrix != null && projectionMatrix != null) {
+			
+			Matrix4by4 modelTransform = modelRenderer.getTransformMatrix();
+			
 			Matrix4by4 viewMatrix = camera.getViewMatrix();
-			TransformPipeline pipeline = new TransformPipeline(modelMatrix, viewMatrix
-					, projectionMatrix);
 			
+			TransformPipeline pipeline = new TransformPipeline(
+					modelMatrix,
+					viewMatrix,
+					projectionMatrix
+			);
 			
-			updateCubeTransformMatrix();
+			Model3D activeModel = modelRenderer.getActiveModel();
 			
-			//Cube triangles
-			for(Triangle3D cubeTri: cubeTriangles) {
+			if(activeModel != null ) {
+				List<Triangle3D> modelTriangles = activeModel.getTriangles();
 				
-				if(!cubeTri.isFrontFacing(camera.getPosition())) {
-					continue;
+				for(Triangle3D cubeTri: activeModel.getTriangles()) {
+					
+					if(!cubeTri.isFrontFacing(camera.getPosition())) {
+						continue;
+					}
+					
+					Vertex v1 = pipeline.transformVertex(cubeTri.getA(), modelTransform, getWidth(), getHeight());
+					Vertex v2 = pipeline.transformVertex(cubeTri.getB(), modelTransform, getWidth(), getHeight());
+					Vertex v3 = pipeline.transformVertex(cubeTri.getC(), modelTransform, getWidth(), getHeight());
+					
+					Triangle2D tri2D = new Triangle2D(v1, v2, v3, cubeTri.getColor(),
+													  v1.getZ(), v2.getZ(), v3.getZ());
+					
+					//Valid triangles check
+					if(!isValidVertex(v1) || !isValidVertex(v2) || !isValidVertex(v3)) {
+						continue;
+					}
+					
+					rasterizer.paintTriangle(tri2D);
 				}
-				
-				Vertex v1 = pipeline.transformVertex(cubeTri.getA(), cubeTransformMatrix, getWidth(), getHeight());
-				Vertex v2 = pipeline.transformVertex(cubeTri.getB(), cubeTransformMatrix, getWidth(), getHeight());
-				Vertex v3 = pipeline.transformVertex(cubeTri.getC(), cubeTransformMatrix, getWidth(), getHeight());
-				
-				Triangle2D tri2D = new Triangle2D(v1, v2, v3, cubeTri.getColor(),
-												  v1.getZ(), v2.getZ(), v3.getZ());
-				
-				//Valid triangles check
-				if(!isValidVertex(v1) || !isValidVertex(v2) || !isValidVertex(v3)) {
-					continue;
-				}
-				
-				rasterizer.paintTriangle(tri2D);
-			}
-			
+		   }
 		}
 		
 		for(Triangle2D  tri: triangles) {
@@ -135,24 +141,6 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 		
 	}
 	
-	public void updateCubeRotation(float deltaX, float deltaY, float deltaZ) {
-		cubeRotationX += deltaX;
-		cubeRotationY += deltaY;
-		cubeRotationZ += deltaZ;
-		
-	}
-	
-	private void updateCubeTransformMatrix() {
-		Direction3D xAxis = new Direction3D(1,0,0);
-		Direction3D yAxis = new Direction3D(0,1,0);
-		Direction3D zAxis = new Direction3D(0,0,1);
-		
-		Matrix4by4 rotaX = Transformations.rotation(cubeRotationX, xAxis);
-		Matrix4by4 rotaY = Transformations.rotation(cubeRotationY, yAxis);
-		Matrix4by4 rotaZ = Transformations.rotation(cubeRotationZ, zAxis);
-		
-		cubeTransformMatrix = rotaX.multiply(rotaY).multiply(rotaZ);
-	}
 	
 	private boolean isValidVertex(Vertex v) {
 		return !Float.isNaN(v.getX()) && !Float.isNaN(v.getY());
@@ -160,7 +148,7 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 
 	@Override
 	public void rotateCube(float dx, float dy, float dz) {
-		updateCubeRotation(dx, dy, dz);
+		modelRenderer.updateRotation(dx, dy, dz);
 		
 	}
 	

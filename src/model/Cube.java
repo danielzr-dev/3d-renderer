@@ -30,7 +30,6 @@ public class Cube implements Model3D {
 		
 		//12 triangles
 		
-		
 		//Back face
 		triangles[0] = new Triangle3D(vertices[4], vertices[6], vertices[5], Color.GREEN);
 		triangles[1] = new Triangle3D(vertices[4], vertices[7], vertices[6], Color.GREEN);

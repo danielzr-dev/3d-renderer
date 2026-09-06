@@ -52,7 +52,6 @@ public class RenderWindow {
 		this.modelRenderer = new ModelRenderer(cube);
 		
 		InputHandler inputHandler = new InputHandler(camera, renderPanel);
-		
 		this.myFrame.addKeyListener(inputHandler);
 		this.myFrame.setFocusable(true);
 		
