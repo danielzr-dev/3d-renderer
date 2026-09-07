@@ -18,9 +18,9 @@ public class InputHandler implements KeyListener {
 	private Set<Integer> keysPressed = new HashSet<>();
 	private ModelRenderer modelRenderer;
 	
-	private static final float ROTATION_SPEED = 0.02f;
-	private static final float CUBE_ROTATION_SPEED = 0.02f;
-	
+	private static final float ROTATION_SPEED = 0.04f;
+	private Set<RenderListener> renderListeners = new HashSet<>();
+	private boolean wireframeEnabled = false;
 	
 	public InputHandler(Camera camera, ModelRenderer modelRenderer) {
 		this.camera = camera;
@@ -28,6 +28,9 @@ public class InputHandler implements KeyListener {
 		
 	}
 	
+	public void addRenderListener(RenderListener renderListener) {
+		renderListeners.add(renderListener);
+	}
 	
 	public interface CubeController {
 		void rotateCube(float dx, float dy, float dz);
@@ -62,6 +65,13 @@ public class InputHandler implements KeyListener {
 				modelRenderer.setActiveModel(new Octahedron());
 				System.out.println("MODEL: TETRAHEDRON");
 				break;
+			
+			case KeyEvent.VK_V:
+				wireframeEnabled = !wireframeEnabled;
+				renderListeners.forEach(l -> l.onWireframeModeToggle(wireframeEnabled));
+				System.out.println("Wireframe toggled");
+				break;
+			
 		}
 		
 	}
@@ -72,32 +82,30 @@ public class InputHandler implements KeyListener {
 		
 	}
 	
-	public void update() {
-		
-		float rotationSpeed = 0.03f;
+	public void update() {	
 		
 		if(keysPressed.contains(KeyEvent.VK_W)) {
 			//Rotate over left Y axis
 			Direction3D xAxis = new Direction3D(1, 0, 0);
-			Quaternion rotation = new Quaternion(rotationSpeed, xAxis);
+			Quaternion rotation = new Quaternion(ROTATION_SPEED, xAxis);
 			camera.rotate(rotation);
 		}
 		if(keysPressed.contains(KeyEvent.VK_S)){
 			//Rotate over rigth Y axis
 			Direction3D xAxis = new Direction3D(1, 0, 0);
-			Quaternion rotation = new Quaternion(-rotationSpeed, xAxis);
+			Quaternion rotation = new Quaternion(-ROTATION_SPEED, xAxis);
 			camera.rotate(rotation);
 		}
 		if(keysPressed.contains(KeyEvent.VK_A)) {
 			//Rotate over X(up)
 			Direction3D yAxis = new Direction3D(0, 1, 0);
-			Quaternion rotation = new Quaternion(rotationSpeed, yAxis);
+			Quaternion rotation = new Quaternion(ROTATION_SPEED, yAxis);
 			camera.rotate(rotation);
 		}
 		if(keysPressed.contains(KeyEvent.VK_D)) {
 			//Rotate over X(down)
 			Direction3D yAxis = new Direction3D(0, 1, 0);
-			Quaternion rotation = new Quaternion(-rotationSpeed, yAxis);
+			Quaternion rotation = new Quaternion(-ROTATION_SPEED, yAxis);
 			camera.rotate(rotation);
 			
 		}	
@@ -121,19 +129,24 @@ public class InputHandler implements KeyListener {
 		}	
 		
 		if(keysPressed.contains(KeyEvent.VK_E)) {
-	        modelRenderer.updateRotation(rotationSpeed, 0, 0);
+	        modelRenderer.updateRotation(ROTATION_SPEED, 0, 0);
 	    }
 	    if(keysPressed.contains(KeyEvent.VK_Q)) {
-	        modelRenderer.updateRotation(-rotationSpeed, 0, 0);
+	        modelRenderer.updateRotation(-ROTATION_SPEED, 0, 0);
 	    }
 	    if(keysPressed.contains(KeyEvent.VK_R)) {
-	        modelRenderer.updateRotation(0, rotationSpeed, 0); 
+	        modelRenderer.updateRotation(0, ROTATION_SPEED, 0); 
 	    }
 	    if(keysPressed.contains(KeyEvent.VK_F)) {
-	        modelRenderer.updateRotation(0, -rotationSpeed, 0);
+	        modelRenderer.updateRotation(0, -ROTATION_SPEED, 0);
 	    }
 	    
 
+	}
+	
+	public interface RenderListener {
+		void onWireframeModeToggle(boolean enabled);
+		void onModelChanged(String modelName);
 	}
 	
 	 
