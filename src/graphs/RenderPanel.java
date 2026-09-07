@@ -17,11 +17,12 @@ import model.Model3D;
 import model.Triangle2D;
 import model.Triangle3D;
 import rendering.TriangleRasterizer;
+import rendering.WireframeRasterizer;
 import rendering.ModelRenderer;
 import rendering.TransformPipeline;
 
 
-public class RenderPanel extends JPanel implements InputHandler.CubeController{
+public class RenderPanel extends JPanel implements InputHandler.RenderListener{
 	
 	private TriangleRasterizer rasterizer;
 	private List<Triangle2D> triangles;
@@ -32,8 +33,8 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 	private ModelRenderer modelRenderer;
 	private Matrix4by4 modelMatrix;
 	private Matrix4by4 projectionMatrix;
-	
-
+	private boolean wireframeMode = false;
+	private WireframeRasterizer wireframeRasterizer;
 	
 	public RenderPanel(int width, int height) {
 		this.bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -41,6 +42,7 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 		this.rasterizer = new TriangleRasterizer(bufferedImage, depthBuffer);
 		this.triangles= new ArrayList<>();
 		this.triangles3D = new ArrayList<>();
+		this.wireframeRasterizer = new WireframeRasterizer(bufferedImage, Color.GREEN);
 		
 		for(int y =0; y < height; y++) {
 			for(int x = 0; x < width; x++) {
@@ -120,7 +122,15 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 						continue;
 					}
 					
-					rasterizer.paintTriangle(tri2D);
+					if(wireframeMode) {
+						wireframeRasterizer.drawWireframeTriangle(v1, v2, v3);
+					} else {
+						Triangle2D triang = new Triangle2D(v1, v2, v3, tri2D.getColor(),
+														  v1.getZ(), v2.getZ(), v3.getZ());
+						
+						rasterizer.paintTriangle(triang);
+					}
+					
 				}
 		   }
 		}
@@ -149,9 +159,30 @@ public class RenderPanel extends JPanel implements InputHandler.CubeController{
 		return !Float.isNaN(v.getX()) && !Float.isNaN(v.getY());
 	}
 
-	@Override
 	public void rotateCube(float dx, float dy, float dz) {
 		modelRenderer.updateRotation(dx, dy, dz);
+		
+	}
+	
+	public void toggleWireframe() {
+		this.wireframeMode = !wireframeMode;
+		
+	}
+	
+	public boolean isWireframeMode() {
+		return wireframeMode;
+	}
+	
+	
+	public void onModelChanged(String modelName) {
+		System.out.println("RenderPanel: Model changed to " + modelName);
+	}
+
+	@Override
+	public void onWireframeModeToggle(boolean enabled) {
+		this.wireframeMode = enabled;
+		System.out.println("RenderPanel: Wireframe = " + enabled);
+		this.repaint();
 		
 	}
 	
