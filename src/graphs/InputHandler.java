@@ -8,6 +8,8 @@ import math.Direction3D;
 import math.Quaternion;
 import model.Cube;
 import model.Pyramid;
+import model.Tetrahedron;
+import model.Octahedron;
 import rendering.ModelRenderer;
 
 public class InputHandler implements KeyListener {
@@ -49,6 +51,16 @@ public class InputHandler implements KeyListener {
 			case KeyEvent.VK_P:
 				modelRenderer.setActiveModel(new Pyramid());
 				System.out.println("MODEL: PYRAMID");
+				break;
+				
+			case KeyEvent.VK_T:
+				modelRenderer.setActiveModel(new Tetrahedron());
+				System.out.println("MODEL: TETRAHEDRON");
+				break;
+			
+			case KeyEvent.VK_O:
+				modelRenderer.setActiveModel(new Octahedron());
+				System.out.println("MODEL: TETRAHEDRON");
 				break;
 		}
 		
