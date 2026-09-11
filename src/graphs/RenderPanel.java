@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import config.AppConfig;
 import math.Direction3D;
 import math.Matrix4by4;
 import math.Transformations;
@@ -42,7 +43,7 @@ public class RenderPanel extends JPanel implements InputHandler.RenderListener{
 		this.rasterizer = new TriangleRasterizer(bufferedImage, depthBuffer);
 		this.triangles= new ArrayList<>();
 		this.triangles3D = new ArrayList<>();
-		this.wireframeRasterizer = new WireframeRasterizer(bufferedImage, Color.GREEN);
+		this.wireframeRasterizer = new WireframeRasterizer(bufferedImage, AppConfig.WIREFRAME_COLOR);
 		
 		for(int y =0; y < height; y++) {
 			for(int x = 0; x < width; x++) {

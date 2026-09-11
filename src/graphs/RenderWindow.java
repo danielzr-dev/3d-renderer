@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import config.AppConfig;
 import graphs.InputHandler.CubeController;
 import math.Direction3D;
 import math.Matrix4by4;
@@ -15,6 +16,7 @@ import math.Transformations;
 import math.Vertex3D;
 import model.Cube;
 import model.Model3D;
+import model.Pyramid;
 import model.Triangle3D;
 import rendering.ModelRenderer;
 
@@ -29,8 +31,8 @@ public class RenderWindow {
 	
 	public RenderWindow() {
 		
-		this.myFrame = new JFrame("Renderizador 3D");
-		this.renderPanel = new RenderPanel(1980, 1080);
+		this.myFrame = new JFrame("3D Renderer");
+		this.renderPanel = new RenderPanel(AppConfig.WINDOW_WIDTH, AppConfig.WINDOW_HEIGHT);
 		
 		this.myFrame.add(this.renderPanel);
 		this.myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,10 +42,18 @@ public class RenderWindow {
 		//Matrices
 		Matrix4by4 modelMatrix = new Matrix4by4();
 		Matrix4by4 projectionMatrix = Transformations.perspective(
-				45.0f, 1980.f/1080.0f, 0.1f, 100.f);
+				AppConfig.FOV,
+				(float) AppConfig.WINDOW_WIDTH / AppConfig.WINDOW_HEIGHT,
+				AppConfig.NEAR_PLANE,
+				AppConfig.FAR_PLANE
+				);
 		
 		//Camera
-		Vertex3D cameraPosition = new Vertex3D(0, 0, 5);
+		Vertex3D cameraPosition = new Vertex3D(
+				AppConfig.CAMERA_INIT_X,
+				AppConfig.CAMERA_INIT_Y,
+				AppConfig.CAMERA_INIT_Z);
+		
 		Quaternion cameraRotation = new Quaternion(0, 0, 0, 1); //Identity (without rotation
 		Camera camera = new Camera(cameraPosition, cameraRotation);
 		
@@ -51,7 +61,11 @@ public class RenderWindow {
 		Model3D cube = new Cube();
 		this.modelRenderer = new ModelRenderer(cube);
 		
-		InputHandler inputHandler = new InputHandler(camera, renderPanel);
+		InputHandler inputHandler = new InputHandler(camera, modelRenderer);
+		this.renderPanel.setModelRenderer(modelRenderer);
+		
+		inputHandler.addRenderListener(renderPanel);
+		
 		this.myFrame.addKeyListener(inputHandler);
 		this.myFrame.setFocusable(true);
 		

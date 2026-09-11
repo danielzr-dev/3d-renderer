@@ -4,6 +4,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Set;
+
+import config.AppConfig;
 import math.Direction3D;
 import math.Quaternion;
 import model.Cube;
@@ -18,7 +20,7 @@ public class InputHandler implements KeyListener {
 	private Set<Integer> keysPressed = new HashSet<>();
 	private ModelRenderer modelRenderer;
 	
-	private static final float ROTATION_SPEED = 0.04f;
+	private static final float ROTATION_SPEED = AppConfig.ROTATION_SPEED;
 	private Set<RenderListener> renderListeners = new HashSet<>();
 	private boolean wireframeEnabled = false;
 	
@@ -112,19 +114,19 @@ public class InputHandler implements KeyListener {
 		
 		if(keysPressed.contains(KeyEvent.VK_UP)) {
 			//Moves camera forward
-			camera.move(0,0, -0.1f);
+			camera.move(0,0, -AppConfig.CAMERA_MOVE_SPEED);
 		}
 		if(keysPressed.contains(KeyEvent.VK_DOWN)){
 			//Moves camera backwards
-			camera.move(0,0, 0.1f);
+			camera.move(0,0, AppConfig.CAMERA_MOVE_SPEED);
 		}
 		if(keysPressed.contains(KeyEvent.VK_LEFT)) {
 			//Moves camera to the left
-			camera.move(-0.1f, 0, 0);
+			camera.move(-AppConfig.CAMERA_MOVE_SPEED, 0, 0);
 		}
 		if(keysPressed.contains(KeyEvent.VK_RIGHT)) {
 			//Moves camera to the right
-			camera.move(0.1f, 0, 0);
+			camera.move(AppConfig.CAMERA_MOVE_SPEED, 0, 0);
 			
 		}	
 		
