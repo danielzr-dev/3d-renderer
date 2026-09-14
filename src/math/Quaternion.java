@@ -85,6 +85,18 @@ public class Quaternion {
 		return new Quaternion(x/magnitude, y/magnitude, z/magnitude, w/magnitude);
 	}
 	
+	public Direction3D rotateVector(Direction3D vector) {
+		
+		Quaternion vQuat = new Quaternion(0, vector.getX(), vector.getY(), vector.getZ());
+		Quaternion conjugate = new Quaternion(this.w, -this.x, -this.y, -this.z);
+		
+		Quaternion result = this.multiply(vQuat).multiply(conjugate);
+		
+		return new Direction3D(result.x, result.y, result.z);
+		
+	}
+	
+	
 	
 	@Override
 	public String toString() {

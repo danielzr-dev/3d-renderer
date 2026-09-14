@@ -39,9 +39,7 @@ public class Camera {
 	public void rotate(Quaternion newRotation) {
 		
 		//Quaternion multiplication
-		Quaternion combined = newRotation.multiply(this.rotation);	
-		
-		combined.normalize();
+		Quaternion combined = this.rotation.multiply(newRotation).normalize();	
 		
 		//Update
 		this.rotation = combined;
@@ -58,6 +56,24 @@ public class Camera {
 	public Vertex3D getPosition() {
 		
 		return position;
+	}
+	
+	public Direction3D getRightAxis() {
+		//Local X axis
+		return rotation.rotateVector(new Direction3D(1,0,0));
+		
+	}
+	
+	public Direction3D getUpAxis() {
+		//Local Y axis
+		return rotation.rotateVector(new Direction3D(0,1,0));
+		
+	}
+	
+	public Direction3D getForwardAxis() {
+		//Local Z axis
+		return rotation.rotateVector(new Direction3D(0,0,-1));
+		
 	}
 
 }
