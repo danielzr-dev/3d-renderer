@@ -41,5 +41,6 @@ public class WireframeRasterizer {
 
 	public void dispose() {
 		g2d.dispose();
+		
 	}
 }

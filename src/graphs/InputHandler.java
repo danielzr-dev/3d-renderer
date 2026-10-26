@@ -2,6 +2,9 @@ package graphs;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +17,7 @@ import model.Tetrahedron;
 import model.Octahedron;
 import rendering.ModelRenderer;
 
-public class InputHandler implements KeyListener {
+public class InputHandler implements KeyListener, MouseMotionListener{
 	
 	private Camera camera;
 	private Set<Integer> keysPressed = new HashSet<>();
@@ -23,6 +26,10 @@ public class InputHandler implements KeyListener {
 	private static final float ROTATION_SPEED = AppConfig.ROTATION_SPEED;
 	private Set<RenderListener> renderListeners = new HashSet<>();
 	private boolean wireframeEnabled = false;
+	
+	
+	private int lastMouseX = 0;
+	private int lastMouseY = 0;
 	
 	public InputHandler(Camera camera, ModelRenderer modelRenderer) {
 		this.camera = camera;
@@ -84,30 +91,53 @@ public class InputHandler implements KeyListener {
 		
 	}
 	
+	private void applyMouseRotation(int deltaX, int deltaY) {
+		
+		if(deltaX != 0) {
+			Direction3D globalUp = new Direction3D(0,1,0);
+			Quaternion yRotation = new Quaternion(
+					deltaX * AppConfig.MOUSE_SENSITIVITY,
+					globalUp
+					);
+			camera.rotate(yRotation);
+		}
+		
+		if(deltaY != 0) {
+			Direction3D rightAxis = camera.getRightAxis().normalize();
+			Quaternion xRotation = new Quaternion(
+					deltaY * AppConfig.MOUSE_SENSITIVITY,
+					rightAxis
+					);
+			camera.rotate(xRotation);	
+		}
+		
+	}
+	
+	
 	public void update() {	
 		
 		if(keysPressed.contains(KeyEvent.VK_W)) {
 			//Rotate over left Y axis
-			Direction3D xAxis = new Direction3D(1, 0, 0);
-			Quaternion rotation = new Quaternion(ROTATION_SPEED, xAxis);
+			Direction3D rightAxis = camera.getRightAxis().normalize();
+			Quaternion rotation = new Quaternion(ROTATION_SPEED, rightAxis);
 			camera.rotate(rotation);
 		}
 		if(keysPressed.contains(KeyEvent.VK_S)){
 			//Rotate over rigth Y axis
-			Direction3D xAxis = new Direction3D(1, 0, 0);
-			Quaternion rotation = new Quaternion(-ROTATION_SPEED, xAxis);
+			Direction3D rightAxis = camera.getRightAxis().normalize();
+			Quaternion rotation = new Quaternion(-ROTATION_SPEED, rightAxis);
 			camera.rotate(rotation);
 		}
 		if(keysPressed.contains(KeyEvent.VK_A)) {
 			//Rotate over X(up)
-			Direction3D yAxis = new Direction3D(0, 1, 0);
-			Quaternion rotation = new Quaternion(ROTATION_SPEED, yAxis);
+			Direction3D upAxis = camera.getUpAxis().normalize();
+			Quaternion rotation = new Quaternion(ROTATION_SPEED, upAxis);
 			camera.rotate(rotation);
 		}
 		if(keysPressed.contains(KeyEvent.VK_D)) {
 			//Rotate over X(down)
-			Direction3D yAxis = new Direction3D(0, 1, 0);
-			Quaternion rotation = new Quaternion(-ROTATION_SPEED, yAxis);
+			Direction3D upAxis = camera.getUpAxis().normalize();
+			Quaternion rotation = new Quaternion(-ROTATION_SPEED, upAxis);
 			camera.rotate(rotation);
 			
 		}	
@@ -150,6 +180,30 @@ public class InputHandler implements KeyListener {
 		void onWireframeModeToggle(boolean enabled);
 		void onModelChanged(String modelName);
 	}
-	
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		mouseMoved(e);
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		int currentX = e.getX();
+		int currentY = e.getY();
+		
+		//Delta calculations
+		
+		int deltaX = currentX - lastMouseX;
+		int deltaY = currentY - lastMouseY;
+		
+		lastMouseX = currentX;
+		lastMouseY = currentY;
+		
+		applyMouseRotation(deltaX, deltaY);
+		
+	}
+
+
 	 
 }

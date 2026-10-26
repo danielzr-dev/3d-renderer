@@ -23,4 +23,7 @@ public final class AppConfig {
 	//Wireframe rendering color
 	public static final java.awt.Color WIREFRAME_COLOR = java.awt.Color.GREEN;
 	
+	//Mouse option
+	public static final float MOUSE_SENSITIVITY = 0.0002f;
+	
 }

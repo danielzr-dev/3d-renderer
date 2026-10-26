@@ -67,6 +67,7 @@ public class RenderWindow {
 		inputHandler.addRenderListener(renderPanel);
 		
 		this.myFrame.addKeyListener(inputHandler);
+		this.myFrame.addMouseMotionListener(inputHandler);
 		this.myFrame.setFocusable(true);
 		
 		this.loopRender = new RenderLoop(renderPanel, inputHandler);
